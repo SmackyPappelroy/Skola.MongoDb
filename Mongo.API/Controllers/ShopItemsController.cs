@@ -27,7 +27,7 @@ namespace Mongo.API.Controllers
             {
                 return Results.Ok(await _service.GetAsync<ShopItem>("ShopItem"));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
             return Results.NotFound();

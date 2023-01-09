@@ -1,15 +1,17 @@
 using Mongo.Common;
+using Mongo.Data.Configuration;
 using Mongo.Data.Services;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Driver;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 
-CreateMongoConnection(builder.Services);
+CreateMongoConnection(builder);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -33,16 +35,12 @@ app.MapControllers();
 
 app.Run();
 
-void CreateMongoConnection(IServiceCollection services)
+void CreateMongoConnection(WebApplicationBuilder builder)
 {
     try
     {
-        var connectionString = "mongodb+srv://hmartin:Borodino123469!@cluster0.xk2rh80.mongodb.net/?retryWrites=true&w=majority";
-        var client = new MongoClient(connectionString);
-        var database = client.GetDatabase("MyTest");
-
-        services.AddSingleton(database);
-        services.AddSingleton<IMongoService, MongoService>();
+        builder.Services.Configure<ShopItemDatabaseSettings>(builder.Configuration.GetSection("WebShopDatabase"));
+        builder.Services.AddSingleton<IMongoService, MongoService>();
     }
     catch (Exception ex)
     {
