@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mongo.Common\Mongo.Common.csproj" />
+  </ItemGroup>
+
 </Project>
